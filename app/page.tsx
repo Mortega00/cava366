@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ExperienceCard } from "@/components/experience-card";
 import { SectionHeading } from "@/components/section-heading";
-import { experiences } from "@/data/experiences";
+import { getFeaturedExperiences } from "@/lib/experiences";
 
 const modes = [
   ["01", "Vino + arquitectura", "Copas que abren otra forma de mirar los espacios que habitamos."],
@@ -11,8 +11,8 @@ const modes = [
   ["04", "Lugares únicos", "Experiencias que cambian de escenario, pero conservan la misma intención."],
 ];
 
-export default function Home() {
-  const featured = experiences.filter((experience) => experience.featured).slice(0, 3);
+export default async function Home() {
+  const featured = await getFeaturedExperiences();
   return <>
     <section className="hero"><Image src="/images/cava366-hero.png" alt="Mesa de vinos a la luz de las velas en un espacio histórico" fill priority sizes="100vw" className="hero__image" /><div className="hero__overlay" />
       <div className="hero__content shell"><p className="eyebrow eyebrow--light">CAVA366 · Vino y experiencias</p><h1>Una copa puede ser el principio de una historia.</h1><p className="hero__lede">Catas, encuentros y vinos elegidos para compartir con tiempo.</p><div className="button-row"><Link className="button button--light" href="/experiencias">Explorar experiencias <span aria-hidden="true">↗</span></Link><Link className="button button--ghost" href="/vinos">Descubrir vinos</Link></div></div>
