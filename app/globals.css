@@ -237,6 +237,14 @@ body:has(.admin-root) .site-header,body:has(.admin-root) .site-footer { display:
   gap:.75rem;
 }
 
+.admin-product-image-help {
+  display:block;
+  margin-top:.65rem;
+  color:#867d75;
+  font-size:.65rem;
+  line-height:1.5;
+}
+
 @media (max-width:480px) {
   .experience-card__bottom {
     align-items:flex-start;
