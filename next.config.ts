@@ -20,6 +20,11 @@ const supabaseStoragePattern = (() => {
 })();
 
 const nextConfig: NextConfig = {
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "5.1mb",
+    },
+  },
   images: {
     remotePatterns: supabaseStoragePattern,
   },

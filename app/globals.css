@@ -43,3 +43,169 @@ body:has(.admin-root) .site-header,body:has(.admin-root) .site-footer { display:
 @media (max-width:800px) { .admin-header__inner,.admin-main { width:min(100% - 32px,1180px); }.admin-header__inner { min-height:unset; flex-wrap:wrap; padding:.9rem 0; gap:.9rem; }.admin-header nav { order:3; width:100%; margin:0; overflow-x:auto; padding-top:.2rem; }.admin-account { margin-left:auto; }.admin-account span { display:none; }.admin-page__heading { align-items:flex-start; flex-direction:column; gap:1.1rem; }.admin-stats { grid-template-columns:repeat(2,1fr); }.admin-form__grid { grid-template-columns:1fr; }.admin-form__wide { grid-column:auto; } }
 @media (max-width:480px) { .admin-brand small { display:none; }.admin-account { padding-left:.7rem; }.admin-header nav { gap:1rem; }.admin-stats { grid-template-columns:1fr 1fr; }.admin-stats article { min-height:112px; padding:1rem; }.admin-stats span { margin-bottom:1.5rem; }.admin-stats strong { font-size:2.25rem; }.admin-form__actions .admin-button { width:100%; }.admin-table-wrap { margin-right:-16px; margin-left:-16px; }.admin-login { padding:.75rem; }.admin-login__card { padding:1.35rem; }.admin-image-field__layout { grid-template-columns:1fr; }.admin-image-preview { max-width:none; } }
 @media (max-width:360px) { .admin-header__inner,.admin-main { width:min(100% - 24px,1180px); }.admin-header nav { gap:.8rem; }.admin-header nav a,.admin-account button { font-size:.6rem; }.admin-login h1 { font-size:1.85rem; }.admin-login__intro { font-size:.86rem; }.admin-login__card .admin-kicker { margin-bottom:1.7rem; } }
+
+/* Uploaded public images use stable, centered frames without distortion. */
+.experience-card__art {
+  aspect-ratio:16 / 10;
+  min-height:180px;
+}
+
+.experience-card__image {
+  object-fit:cover;
+  object-position:center;
+}
+
+.experience-detail-hero {
+  overflow:hidden;
+  background:var(--wine-deep);
+}
+
+.experience-detail-hero__image {
+  object-fit:cover;
+  object-position:center;
+}
+
+/* Private admin navigation stays compact while keeping related actions together. */
+.admin-header .admin-nav {
+  display:flex;
+  align-items:center;
+  gap:1.3rem;
+  margin-left:auto;
+}
+
+.admin-nav > a,
+.admin-nav summary,
+.admin-nav button {
+  color:#4a433d;
+  font:700 .64rem/1 var(--sans);
+  letter-spacing:.075em;
+  text-transform:uppercase;
+}
+
+.admin-nav__group {
+  position:relative;
+}
+
+.admin-nav summary {
+  display:flex;
+  align-items:center;
+  gap:.4rem;
+  cursor:pointer;
+  list-style:none;
+}
+
+.admin-nav summary::-webkit-details-marker {
+  display:none;
+}
+
+.admin-nav summary::after {
+  content:"⌄";
+  font-size:.8rem;
+  line-height:1;
+  transition:transform .16s ease;
+}
+
+.admin-nav__group[open] summary::after {
+  transform:rotate(180deg);
+}
+
+.admin-nav__menu {
+  position:absolute;
+  z-index:30;
+  top:calc(100% + .7rem);
+  left:-.7rem;
+  display:grid;
+  width:max-content;
+  min-width:10.75rem;
+  padding:.38rem;
+  border:1px solid rgba(37,33,30,.16);
+  background:#f8f5ee;
+  box-shadow:0 .55rem 1.4rem rgba(48,35,27,.08);
+}
+
+.admin-nav__group:not([open]) .admin-nav__menu {
+  display:none;
+}
+
+.admin-nav__menu a {
+  padding:.62rem .68rem;
+  color:#4a433d;
+  font-size:.68rem;
+  line-height:1.25;
+  white-space:nowrap;
+}
+
+.admin-nav__menu a:hover,
+.admin-nav__menu a:focus-visible {
+  background:#eee8de;
+  color:var(--wine);
+}
+
+.admin-nav form {
+  margin:0;
+}
+
+.admin-nav button {
+  padding:0;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+}
+
+.admin-nav > a:hover,
+.admin-nav summary:hover,
+.admin-nav button:hover {
+  color:var(--wine);
+}
+
+.admin-nav > a:focus-visible,
+.admin-nav summary:focus-visible,
+.admin-nav button:focus-visible {
+  outline:2px solid var(--wine);
+  outline-offset:4px;
+}
+
+@media (max-width:800px) {
+  .admin-header .admin-nav {
+    display:grid;
+    width:100%;
+    gap:0;
+    margin:0;
+    overflow:visible;
+    border-top:1px solid rgba(37,33,30,.14);
+  }
+
+  .admin-nav > a,
+  .admin-nav summary,
+  .admin-nav button {
+    display:flex;
+    width:100%;
+    min-height:2.65rem;
+    align-items:center;
+    padding:.7rem 0;
+  }
+
+  .admin-nav > a,
+  .admin-nav__group,
+  .admin-nav form {
+    border-bottom:1px solid rgba(37,33,30,.12);
+  }
+
+  .admin-nav summary {
+    justify-content:space-between;
+  }
+
+  .admin-nav__menu {
+    position:static;
+    width:auto;
+    min-width:0;
+    padding:0 0 .45rem .8rem;
+    border:0;
+    background:transparent;
+    box-shadow:none;
+  }
+
+  .admin-nav__menu a {
+    padding:.58rem .2rem;
+  }
+}

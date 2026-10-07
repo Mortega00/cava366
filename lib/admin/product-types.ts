@@ -1,6 +1,5 @@
-export type ProductTone = "burgundy" | "clay" | "olive";
-
-export type Product = {
+export type AdminProduct = {
+  id: string;
   slug: string;
   name: string;
   winery: string;
@@ -9,9 +8,10 @@ export type Product = {
   description: string;
   price: number | null;
   offerPrice: number | null;
+  stock: number | null;
   imageUrl: string | null;
   featured: boolean;
+  published: boolean;
   isOffer: boolean;
-  offerLabel: string | null;
-  tone: ProductTone;
+  offerLabel: string;
 };
