@@ -88,7 +88,8 @@ export function canReserveExperience(experience: Pick<Experience, "status">) {
 }
 
 export function getExperienceWhatsAppReservationUrl(experience: Pick<Experience, "title" | "date" | "time">) {
-  const message = `Hola, quiero reservar para “${experience.title}” del ${formatExperienceDate(experience.date)} a las ${experience.time}. ¿Hay disponibilidad?`;
+  const reservationDate = new Intl.DateTimeFormat("es-AR", { day: "numeric", month: "long", timeZone: "UTC" }).format(dateOnlyToUtc(experience.date));
+  const message = `Hola, quiero reservar para “${experience.title}” del ${reservationDate} a las ${experience.time}. ¿Hay disponibilidad?`;
   return `https://wa.me/5491131031414?text=${encodeURIComponent(message)}`;
 }
 
