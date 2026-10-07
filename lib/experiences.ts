@@ -20,6 +20,8 @@ type SupabaseExperienceRow = {
   image_url: string | null;
   featured: boolean;
   status: ExperienceStatus;
+  capacity_total: number | null;
+  spots_available: number | null;
 };
 
 const FALLBACK_IMAGE = "/images/cava366-hero.png";
@@ -64,7 +66,30 @@ export function mapExperienceRow(row: SupabaseExperienceRow): Experience {
     featured: row.featured,
     status: row.status,
     statusLabel: statusLabels[row.status],
+    capacityTotal: row.capacity_total,
+    spotsAvailable: row.spots_available,
   };
+}
+
+export function getExperienceAvailabilityLabel(experience: Pick<Experience, "status" | "spotsAvailable">) {
+  if (experience.status === "sold_out") return "Agotado";
+  if (experience.status === "finished") return "Finalizada";
+  if (experience.spotsAvailable === null) return null;
+
+  if (experience.status === "last_spots") {
+    return experience.spotsAvailable === 1 ? "Último lugar" : `Últimos ${experience.spotsAvailable} lugares`;
+  }
+
+  return experience.spotsAvailable === 1 ? "1 lugar disponible" : `${experience.spotsAvailable} lugares disponibles`;
+}
+
+export function canReserveExperience(experience: Pick<Experience, "status">) {
+  return experience.status === "available" || experience.status === "last_spots";
+}
+
+export function getExperienceWhatsAppReservationUrl(experience: Pick<Experience, "title" | "date" | "time">) {
+  const message = `Hola, quiero reservar para “${experience.title}” del ${formatExperienceDate(experience.date)} a las ${experience.time}. ¿Hay disponibilidad?`;
+  return `https://wa.me/5491131031414?text=${encodeURIComponent(message)}`;
 }
 
 function reportExperiencesFallback(reason: string, error?: unknown) {
@@ -86,7 +111,7 @@ export const getPublishedExperiences = cache(async (): Promise<Experience[]> => 
 
   const { data, error } = await supabase
     .from("experiences")
-    .select("slug, title, date, time, venue_name, location, price, category, short_description, description, includes, image_url, featured, status")
+    .select("slug, title, date, time, venue_name, location, price, category, short_description, description, includes, image_url, featured, status, capacity_total, spots_available")
     .eq("published", true)
     .order("date", { ascending: true });
 
@@ -114,7 +139,7 @@ export const getPublishedExperienceBySlug = cache(async (slug: string): Promise<
 
   const { data, error } = await supabase
     .from("experiences")
-    .select("slug, title, date, time, venue_name, location, price, category, short_description, description, includes, image_url, featured, status")
+    .select("slug, title, date, time, venue_name, location, price, category, short_description, description, includes, image_url, featured, status, capacity_total, spots_available")
     .eq("slug", slug)
     .eq("published", true)
     .maybeSingle();

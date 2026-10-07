@@ -21,6 +21,8 @@ type ExperienceInput = {
   featured: boolean;
   published: boolean;
   status: ExperienceStatus;
+  capacity_total: number | null;
+  spots_available: number | null;
 };
 
 const validStatuses = new Set<ExperienceStatus>(["available", "last_spots", "sold_out", "finished"]);
@@ -28,6 +30,17 @@ const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}
 
 function toText(formData: FormData, field: string) {
   return String(formData.get(field) ?? "").trim();
+}
+
+function parseNullableInteger(rawValue: string, label: string): { value?: number | null; error?: string } {
+  if (rawValue === "") return { value: null };
+
+  const value = Number(rawValue);
+  if (!Number.isInteger(value) || value < 0) {
+    return { error: `${label} debe ser un número entero igual o mayor que cero.` };
+  }
+
+  return { value };
 }
 
 function parseExperience(formData: FormData): { value?: ExperienceInput; error?: string } {
@@ -41,7 +54,6 @@ function parseExperience(formData: FormData): { value?: ExperienceInput; error?:
   const shortDescription = toText(formData, "short_description");
   const description = toText(formData, "description");
   const status = toText(formData, "status") as ExperienceStatus;
-  const rawPrice = toText(formData, "price");
 
   if (![title, slug, date, time, venueName, location, category, shortDescription, description].every(Boolean)) {
     return { error: "Completá todos los campos obligatorios." };
@@ -55,9 +67,19 @@ function parseExperience(formData: FormData): { value?: ExperienceInput; error?:
     return { error: "Ingresá una fecha y hora válidas." };
   }
 
-  const price = rawPrice === "" ? null : Number(rawPrice);
-  if (price !== null && (!Number.isInteger(price) || price < 0)) {
-    return { error: "El valor debe ser un número entero igual o mayor que cero." };
+  const price = parseNullableInteger(toText(formData, "price"), "El valor");
+  if (price.error) return { error: price.error };
+
+  const capacityTotal = parseNullableInteger(toText(formData, "capacity_total"), "Los cupos totales");
+  if (capacityTotal.error) return { error: capacityTotal.error };
+
+  const spotsAvailable = parseNullableInteger(toText(formData, "spots_available"), "Los lugares disponibles");
+  if (spotsAvailable.error) return { error: spotsAvailable.error };
+
+  const capacityTotalValue = capacityTotal.value ?? null;
+  const spotsAvailableValue = spotsAvailable.value ?? null;
+  if (capacityTotalValue !== null && spotsAvailableValue !== null && spotsAvailableValue > capacityTotalValue) {
+    return { error: "Los lugares disponibles no pueden superar los cupos totales." };
   }
 
   if (!validStatuses.has(status)) {
@@ -72,7 +94,7 @@ function parseExperience(formData: FormData): { value?: ExperienceInput; error?:
       time,
       venue_name: venueName,
       location,
-      price,
+      price: price.value ?? null,
       category,
       short_description: shortDescription,
       description,
@@ -80,6 +102,8 @@ function parseExperience(formData: FormData): { value?: ExperienceInput; error?:
       featured: formData.get("featured") === "on",
       published: formData.get("published") === "on",
       status,
+      capacity_total: capacityTotalValue,
+      spots_available: spotsAvailableValue,
     },
   };
 }

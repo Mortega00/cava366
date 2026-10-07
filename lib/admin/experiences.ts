@@ -22,9 +22,11 @@ type ExperienceRow = {
   featured: boolean;
   published: boolean;
   status: ExperienceStatus;
+  capacity_total: number | null;
+  spots_available: number | null;
 };
 
-const experienceColumns = "id, slug, title, date, time, venue_name, location, price, category, short_description, description, includes, image_url, featured, published, status";
+const experienceColumns = "id, slug, title, date, time, venue_name, location, price, category, short_description, description, includes, image_url, featured, published, status, capacity_total, spots_available";
 
 function mapAdminExperience(row: ExperienceRow): AdminExperience {
   return {
@@ -44,6 +46,8 @@ function mapAdminExperience(row: ExperienceRow): AdminExperience {
     featured: row.featured,
     published: row.published,
     status: row.status,
+    capacityTotal: row.capacity_total,
+    spotsAvailable: row.spots_available,
   };
 }
 

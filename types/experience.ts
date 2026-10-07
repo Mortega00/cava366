@@ -19,4 +19,6 @@ export type Experience = {
   featured: boolean;
   status: ExperienceStatus;
   statusLabel: string;
+  capacityTotal: number | null;
+  spotsAvailable: number | null;
 };

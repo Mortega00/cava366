@@ -209,3 +209,42 @@ body:has(.admin-root) .site-header,body:has(.admin-root) .site-footer { display:
     padding:.58rem .2rem;
   }
 }
+
+/* Experience availability keeps the public cards editorial and lightweight. */
+.experience-card__availability {
+  margin:-.75rem 0 1.45rem;
+  color:var(--muted);
+  font-size:.68rem;
+  font-weight:700;
+  letter-spacing:.075em;
+  line-height:1.4;
+  text-transform:uppercase;
+}
+
+.experience-card__availability--last_spots {
+  color:var(--wine);
+}
+
+.experience-card__availability--sold_out,
+.experience-card__availability--finished {
+  color:var(--muted);
+}
+
+.experience-card__actions {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:.75rem;
+}
+
+@media (max-width:480px) {
+  .experience-card__bottom {
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .experience-card__actions {
+    width:100%;
+    justify-content:space-between;
+  }
+}

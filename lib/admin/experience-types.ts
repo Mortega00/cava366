@@ -17,6 +17,8 @@ export type AdminExperience = {
   featured: boolean;
   published: boolean;
   status: ExperienceStatus;
+  capacityTotal: number | null;
+  spotsAvailable: number | null;
 };
 
 export const adminStatusOptions: { value: ExperienceStatus; label: string }[] = [
