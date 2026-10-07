@@ -14,6 +14,7 @@ export type Experience = {
   description: string;
   includes: string[];
   image: string;
+  imageUrl?: string | null;
   imageAlt: string;
   featured: boolean;
   status: ExperienceStatus;

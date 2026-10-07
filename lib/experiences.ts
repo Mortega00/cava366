@@ -59,6 +59,7 @@ export function mapExperienceRow(row: SupabaseExperienceRow): Experience {
     description: row.description,
     includes: row.includes ?? [],
     image: row.image_url?.trim() || FALLBACK_IMAGE,
+    imageUrl: row.image_url?.trim() || null,
     imageAlt: row.title,
     featured: row.featured,
     status: row.status,
